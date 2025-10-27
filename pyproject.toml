@@ -1,0 +1,16 @@
+[project]
+name = "dype"
+description = "DyPE: Dynamic Position Extrapolation for Ultra High Resolution Diffusion ,you can use a wrapper node it in comfyUI"
+version = "1.0.0"
+license = {file = "LICENSE"}
+dependencies = ["torch", "torchvision", "diffusers", "transformers", "accelerate", "sentencepiece", "opencv-python", "omegaconf"]
+
+[project.urls]
+Repository = "https://github.com/smthemex/ComfyUI_DyPE"
+#  Used by Comfy Registry https://registry.comfy.org
+
+[tool.comfy]
+PublisherId = "smthemex"
+DisplayName = "ComfyUI_DyPE"
+Icon = ""
+includes = []
