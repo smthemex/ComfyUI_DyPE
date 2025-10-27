@@ -4,5 +4,3 @@ diffusers
 transformers
 accelerate
 sentencepiece
-opencv-python
-omegaconf
