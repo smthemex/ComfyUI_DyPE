@@ -3,8 +3,8 @@
 
 Upadte
 -----
-* coming soon, 24G Vram infer 4096*4096
-
+* 24G Vram infer 4096x4096,  8G 2048x2048 ,12G 3840x2160,16G 3840x3840
+ 
   
 1.Installation  
 -----
@@ -44,7 +44,11 @@ pip install -r requirements.txt
 -----
 ![](https://github.com/smthemex/ComfyUI_DyPE/blob/main/example_workflows/example.png)
 
-5.Citation
+5.License and Commercial Use
+-----
+This work is patent pending. For commercial use or licensing inquiries, please contact the [authors](mailto:noam.issachar@mail.huji.ac.il).
+
+6.Citation
 -----
 ```
 @misc{issachar2025dype,
@@ -56,5 +60,4 @@ pip install -r requirements.txt
       primaryClass={cs.CV},
       url={https://arxiv.org/abs/2510.20766}, 
 }
-
-``
+```
