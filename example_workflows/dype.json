@@ -1,0 +1,381 @@
+{
+  "id": "dcb902c2-f623-4782-80ca-d82f4367b76a",
+  "revision": 0,
+  "last_node_id": 10,
+  "last_link_id": 9,
+  "nodes": [
+    {
+      "id": 7,
+      "type": "VAEDecode",
+      "pos": [
+        2783.722420734173,
+        468.9747811081777
+      ],
+      "size": [
+        140,
+        46
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 6
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            9
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 3,
+      "type": "DyPE_Condition",
+      "pos": [
+        2351.215500053646,
+        151.25208853973768
+      ],
+      "size": [
+        270,
+        130
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DyPE_Condition"
+      },
+      "widgets_values": [
+        "FLUX\\flux_lora_real.safetensors",
+        "flux-turbo.safetensors",
+        1,
+        1
+      ]
+    },
+    {
+      "id": 8,
+      "type": "VAELoader",
+      "pos": [
+        2676.663272039556,
+        606.8471221510558
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "ae.safetensors"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "DyPE_KSampler",
+      "pos": [
+        2693.652638832742,
+        151.3797780098383
+      ],
+      "size": [
+        289.4140625,
+        198
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 3
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DyPE_KSampler"
+      },
+      "widgets_values": [
+        663768709,
+        "randomize",
+        8,
+        4.5,
+        true,
+        1
+      ]
+    },
+    {
+      "id": 10,
+      "type": "SaveImage",
+      "pos": [
+        3035.2771383564864,
+        93.04007950536354
+      ],
+      "size": [
+        678.1073453740255,
+        590.2257718073113
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 9
+        }
+      ],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "ComfyUI"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "DyPE_Encode",
+      "pos": [
+        2238.267976164183,
+        374.3926348497841
+      ],
+      "size": [
+        419.8984012699166,
+        297.50242855567024
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 8
+        },
+        {
+          "name": "latent",
+          "shape": 7,
+          "type": "LATENT",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DyPE_Encode"
+      },
+      "widgets_values": [
+        2048,
+        2048,
+        "In the center of the screen is a pot of tiger skin orchid, which is emerald green in color and has leaves that resemble borders, lush and fan-shaped; Under the Tiger Skin Orchid, there is a white minimalist style long tabletop and front side, with the table legs located outside the frames on both sides of the screen and not displayed; Hupi Lan Hou is a woman with an Asian face, cold white skin, black flowing short hair, thick bangs, seductive makeup, slender eye tails, slightly lowered head, holding a water bottle to water Hupi Lan in one hand and lightly placing the other hand on the table. Her full body contour is cleverly covered by Hupi Lan, and under the table are her fair standing legs; Macro flat shooting of the half body, focusing on the tiger skin orchid, clear and sharp, with slight blurring of the outside except for slight focus, simple white space environment, and mottled shadows on the white wall behind, increasing the sense of layering in the picture"
+      ]
+    },
+    {
+      "id": 1,
+      "type": "DyPE_Model",
+      "pos": [
+        1964.7428700531814,
+        164.33425993590876
+      ],
+      "size": [
+        270,
+        130
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DyPE_Model"
+      },
+      "widgets_values": [
+        "flux1-kj-dev-fp8.safetensors",
+        "none",
+        true,
+        "yarn"
+      ]
+    },
+    {
+      "id": 9,
+      "type": "DualCLIPLoader",
+      "pos": [
+        1961.6881307025724,
+        402.34845404851785
+      ],
+      "size": [
+        270,
+        130
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            8
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DualCLIPLoader"
+      },
+      "widgets_values": [
+        "clip_l.safetensors",
+        "t5xxl_fp8_e4m3fn.safetensors",
+        "flux",
+        "default"
+      ]
+    }
+  ],
+  "links": [
+    [
+      2,
+      1,
+      0,
+      3,
+      0,
+      "MODEL"
+    ],
+    [
+      3,
+      3,
+      0,
+      5,
+      0,
+      "MODEL"
+    ],
+    [
+      4,
+      4,
+      0,
+      5,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      6,
+      5,
+      0,
+      7,
+      0,
+      "LATENT"
+    ],
+    [
+      7,
+      8,
+      0,
+      7,
+      1,
+      "VAE"
+    ],
+    [
+      8,
+      9,
+      0,
+      4,
+      0,
+      "CLIP"
+    ],
+    [
+      9,
+      7,
+      0,
+      10,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 1.1167815779424772,
+      "offset": [
+        -1951.4670669070936,
+        8.638578716394992
+      ]
+    },
+    "frontendVersion": "1.28.8",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
+  },
+  "version": 0.4
+}
