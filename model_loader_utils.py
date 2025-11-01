@@ -106,19 +106,6 @@ def cv2tensor(img,bgr2rgb=True):
 
 
 
-def load_lora_for_unet_only(pipeline, lora_path, adapter_name="default", lora_scale=1.0):
-
-    try:
-      
-        pipeline.load_lora_weights(lora_path, adapter_name=adapter_name)
-        pipeline.set_adapters(adapter_name, adapter_weights=lora_scale)
-        print(f"成功加载LoRA权重: {adapter_name} (scale: {lora_scale})")
-    except Exception as e:
-        print(f"加载LoRA权重失败: {e}")
-    
-    return pipeline
-
-
 def load_flux_tansformer(gguf_path,unet_path,use_dype,method,):
 
     if gguf_path : 
@@ -163,21 +150,30 @@ def load_conditioning_model(model,lora1,lora2,lora_scales=[1.0,1.0]):
 
     if lora_list is None:
         return pipeline
-    try:
+    try:    
         if len(lora_list)!=len(lora_scales): #sacles  
             lora_scales = lora_scales[:1]
-        for idx, (lora_path, scale) in enumerate(zip(lora_list, lora_scales)):
-            if lora_path is not None:
-                try:
-                    pipeline = load_lora_for_unet_only(
-                        pipeline, 
-                        lora_path, 
-                        adapter_name=os.path.basename(lora_path).split('.')[0], 
-                        lora_scale=scale
-                    )
-                except Exception as e:
-                    print(f"Failed to apply LoRA {idx+1} ({lora_path}): {str(e)}")
-    
+        all_adapters = pipeline.get_list_adapters()
+        dit_list=[]
+        if all_adapters:
+            dit_list= all_adapters['transformer']
+        adapter_name_list=[]
+        for path in lora_list:
+            if path is not None:
+                name=os.path.basename(path).split('.')[0]
+                adapter_name_list.append(name)
+                if name in dit_list:
+                    continue
+                pipeline.load_lora_weights(path, adapter_name=name)
+        print(f"成功加载LoRA权重: {adapter_name_list} (scale: {lora_scales})")        
+        pipeline.set_adapters(adapter_name_list, adapter_weights=lora_scales)
+        try:
+            active_adapters = pipeline.get_active_adapters()
+            all_adapters = pipeline.get_list_adapters()
+            print(f"当前激活的适配器: {active_adapters}")
+            print(f"所有可用适配器: {all_adapters}") 
+        except:
+            pass
         return pipeline
         
     except Exception as e:
