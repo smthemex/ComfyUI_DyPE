@@ -3,6 +3,7 @@
 
 Upadte
 -----
+* fix lora loader error ,tyr use a real lora and turo lora 
 * 24G Vram infer 4096x4096,  8G 2048x2048 ,12G 3840x2160,16G 3840x3840
  
   
@@ -16,7 +17,6 @@ git clone https://github.com/smthemex/ComfyUI_DyPE
 
 2.requirements  
 ----
-
 ```
 pip install -r requirements.txt
 ```
@@ -38,11 +38,14 @@ pip install -r requirements.txt
 |        ├──t5xxl_fp8_e4m3fn.safetensors
 ├── ComfyUI/models/lora
 |        ├──flux_turbo.safetensors
+|        ├──flux_real.safetensors
+
 ```
   
 4.Example
 -----
-![](https://github.com/smthemex/ComfyUI_DyPE/blob/main/example_workflows/example.png)
+![](https://github.com/smthemex/ComfyUI_DyPE/blob/main/example_workflows/example111.png)
+![](https://github.com/smthemex/ComfyUI_DyPE/blob/main/example_workflows/ComfyUI_00008_.png)
 
 5.License and Commercial Use
 -----
