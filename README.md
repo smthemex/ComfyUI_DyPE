@@ -3,6 +3,7 @@
 
 Upadte
 -----
+* add ip adapter support ,The effect is not a good ..  加入ip adapter支持
 * fix lora loader error ,tyr use a real lora and turo lora 
 * 24G Vram infer 4096x4096,  8G 2048x2048 ,12G 3840x2160,16G 3840x3840
  
@@ -27,6 +28,8 @@ pip install -r requirements.txt
 * 3.1 [Krea-dev](https://huggingface.co/black-forest-labs/FLUX.1-Krea-dev/tree/main)  or [fp8 ](https://huggingface.co/boricuapab/flux1-krea-dev-fp8/tree/main)   don't support scaled model / 不支持scaled 模型   
 * 3.2 ae/T5/clip_l / normal flux dev
 * 3.3 turbo lora  [alimama-creative](https://huggingface.co/alimama-creative/FLUX.1-Turbo-Alpha/tree/main)
+* 3.4 ip adapter [xflux](https://huggingface.co/XLabs-AI/flux-ip-adapter)
+* 3.5 clip_vision [ open](https://huggingface.co/openai/clip-vit-large-patch14)
   
 ```
 ├── ComfyUI/models/diffusion_models
@@ -39,12 +42,19 @@ pip install -r requirements.txt
 ├── ComfyUI/models/lora
 |        ├──flux_turbo.safetensors
 |        ├──flux_real.safetensors
-
+├── ComfyUI/models/photomaker  #ip only
+|        ├──ip_adapter.safetensors
+├── ComfyUI/models/clip_vision #ip only
+|        ├──clip-vit-large-patch14.safetensors
 ```
   
 4.Example
 -----
+* t2i
 ![](https://github.com/smthemex/ComfyUI_DyPE/blob/main/example_workflows/example111.png)
+* i2i
+![](https://github.com/smthemex/ComfyUI_DyPE/blob/main/example_workflows/example_ip.png)
+* example
 ![](https://github.com/smthemex/ComfyUI_DyPE/blob/main/example_workflows/ComfyUI_00008_.png)
 
 5.License and Commercial Use
