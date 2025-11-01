@@ -137,7 +137,7 @@ def load_flux_tansformer(gguf_path,unet_path,use_dype,method,):
 
     return transformer
 
-def load_conditioning_model(model,lora1,lora2,lora_scales=[1.0,1.0]):
+def load_conditioning_model(model,ip_adpter_path,lora1,lora2,lora_scales=[1.0,1.0]):
 
     lora1_path=folder_paths.get_full_path("loras", lora1) if lora1!="none" else None
     lora2_path=folder_paths.get_full_path("loras", lora2) if lora2!="none" else None
@@ -147,7 +147,30 @@ def load_conditioning_model(model,lora1,lora2,lora_scales=[1.0,1.0]):
     from.DyPE.flux.pipeline_flux import FluxPipeline
     pipeline = FluxPipeline.from_pretrained(os.path.join(cur_path,"Flux/FLUX.1-Krea-dev"),VAE=vae,vae=None,transformer=model,text_encoder=None,text_encoder_2=None, torch_dtype=torch.bfloat16)
     lora_list=lora_list if lora_list else None
-
+    if ip_adpter_path is not None:
+        from safetensors import safe_open
+        if os.path.basename(ip_adpter_path).endswith(".safetensors"):
+                    state_dict = {"image_proj": {}, "ip_adapter": {}}
+                    with safe_open(ip_adpter_path, framework="pt", device="cpu") as f:
+                        image_proj_keys = ["ip_adapter_proj_model.", "image_proj."]
+                        ip_adapter_keys = ["double_blocks.", "ip_adapter."]
+                        for key in f.keys():
+                            if any(key.startswith(prefix) for prefix in image_proj_keys):
+                                diffusers_name = ".".join(key.split(".")[1:])
+                                state_dict["image_proj"][diffusers_name] = f.get_tensor(key)
+                            elif any(key.startswith(prefix) for prefix in ip_adapter_keys):
+                                diffusers_name = (
+                                    ".".join(key.split(".")[1:])
+                                    .replace("ip_adapter_double_stream_k_proj", "to_k_ip")
+                                    .replace("ip_adapter_double_stream_v_proj", "to_v_ip")
+                                    .replace("processor.", "")
+                                )
+                                state_dict["ip_adapter"][diffusers_name] = f.get_tensor(key)
+        else:
+            from diffusers.models.modeling_utils import load_state_dict
+            state_dict = load_state_dict(ip_adpter_path)
+        pipeline.load_ip_adapter(state_dict,os.path.basename(ip_adpter_path))
+        pipeline.set_ip_adapter_scale(1.0)
     if lora_list is None:
         return pipeline
     try:    
@@ -190,9 +213,9 @@ def apply_base_model(diffusion_models,gguf,use_dype,method,):
     return transformer
 
 
-def infer_dype(pipeline, latent, prompt_embeds,pooled_prompt_embeds,negative_prompt_embeds,negative_pooled_prompt_embeds,seed, 
+def infer_dype(pipeline, ip_adapter_image_embeds, prompt_embeds,pooled_prompt_embeds,negative_prompt_embeds,negative_pooled_prompt_embeds,seed, 
                           guidance_scale,num_inference_steps,width,height):
-
+    print(ip_adapter_image_embeds.shape)
     inputs = {
         "prompt": None,
         "generator": torch.manual_seed(seed),
@@ -203,7 +226,7 @@ def infer_dype(pipeline, latent, prompt_embeds,pooled_prompt_embeds,negative_pro
         "pooled_prompt_embeds":pooled_prompt_embeds,
         "negative_prompt_embeds": negative_prompt_embeds,
         "negative_pooled_prompt_embeds":negative_pooled_prompt_embeds,
-        "latents":latent,
+        "ip_adapter_image_embeds":[ip_adapter_image_embeds],
         "height": height,
         "width": width,  
     }
