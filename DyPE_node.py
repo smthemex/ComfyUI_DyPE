@@ -45,6 +45,7 @@ class DyPE_Condition:
         return {"required":
                 {
                     "model": ("MODEL",),
+                    "ip_adpter": (["none"] +folder_paths.get_filename_list("photomaker"),),
                     "lora1": (["none"] +folder_paths.get_filename_list("loras"),),
                     "lora2": (["none"] +folder_paths.get_filename_list("loras"),),
                     "scale1": ("FLOAT", {"default": 1.0, "min": 0.1, "max": 1.0, "step": 0.1, "round": 0.01,}),
@@ -57,8 +58,10 @@ class DyPE_Condition:
     FUNCTION = "main"
     CATEGORY = "DyPE"
     
-    def main(self,model,lora1,lora2,scale1,scale2):
-        model=load_conditioning_model(model,lora1,lora2,[scale1,scale2])
+    def main(self,model,ip_adpter,lora1,lora2,scale1,scale2):
+        ip_adpter_path=folder_paths.get_full_path("photomaker", ip_adpter) if ip_adpter!="none" else None
+       
+        model=load_conditioning_model(model,ip_adpter_path,lora1,lora2,[scale1,scale2])
         return (model,)
     
 
@@ -71,10 +74,7 @@ class DyPE_Encode:
                 "width": ("INT", {"default": 2048, "min": 256, "max": 4096, "step": 16, "display": "number"}),
                 "height": ("INT", {"default": 2048, "min": 256, "max": 4096, "step": 16, "display": "number"}),
                 "pos_text": ("STRING", {"multiline": True,"default": "A mysterious woman stands confidently in elaborate, dark armor adorned with intricate designs, holding a staff, against a backdrop of smoke and an ominous red sky, with shadowy, gothic buildings in the distance."}),
-            },
-            "optional": {
-                        "latent":("LATENT",),
-                         }
+            },       
         }
     RETURN_TYPES = ("CONDITIONING",)
     RETURN_NAMES = ("positive", )
@@ -84,14 +84,11 @@ class DyPE_Encode:
 
     def encode(self, clip,width,height,pos_text,**kwargs):
 
-        latent=kwargs.get("latent",None)
-        if latent is not None: 
-            latent=latent["samples"] #torch.Size([1, 16, 320, 320])  #2560*2560
-
+      
         tokens_p = clip.tokenize(pos_text)
         postive = clip.encode_from_tokens_scheduled(tokens_p) 
 
-        add_dict={"latent":latent,"size":(width,height),}
+        add_dict={"size":(width,height),}
         postive=node_helpers.conditioning_set_values(postive, {"add_dict": add_dict}) 
         return (postive,)
         
@@ -126,7 +123,7 @@ class DyPE_KSampler:
         width,height=condition.get("size",(1024,1024))
         samples=infer_dype(
             model,
-            latent=condition.get("latent",None),
+            ip_adapter_image_embeds=positive[0][1]["unclip_conditioning"][0]["clip_vision_output"]["image_embeds"], #image_embeds.
             prompt_embeds=positive[0][0],
             pooled_prompt_embeds=positive[0][1].get("pooled_output"),
             negative_prompt_embeds=None,
