@@ -191,7 +191,7 @@ class FluxPipeline(
         tokenizer_2: T5TokenizerFast,
         transformer: FluxTransformer2DModel,
         #image_encoder: CLIPVisionModelWithProjection = None,
-        feature_extractor: CLIPImageProcessor = None,
+        #feature_extractor: CLIPImageProcessor = None,
         VAE = None,
     ):
         super().__init__()
@@ -205,7 +205,7 @@ class FluxPipeline(
             transformer=transformer,
             scheduler=scheduler,
             #image_encoder=image_encoder,
-            feature_extractor=feature_extractor,
+            #feature_extractor=feature_extractor,
         )
         self.vae=VAE
         self.vae_scale_factor = 2 ** (len(self.vae.block_out_channels) - 1) if getattr(self, "vae", None) else 8
@@ -426,7 +426,8 @@ class FluxPipeline(
                 )
 
             for single_image_embeds in ip_adapter_image_embeds:
-                image_embeds.append(single_image_embeds)
+                image_embeds.append(single_image_embeds[None, :])
+                #image_embeds.append(single_image_embed) 1,1,768
 
         ip_adapter_image_embeds = []
         for single_image_embeds in image_embeds:
@@ -863,77 +864,39 @@ class FluxPipeline(
 
          # 4. Prepare latent variables  # 5. Prepare timesteps
         num_channels_latents = self.transformer.config.in_channels // 4
-        if latents is not None: # not a good idea
-            sigmas = np.linspace(1.0, 1 / num_inference_steps, num_inference_steps) if sigmas is None else sigmas
-            if hasattr(self.scheduler.config, "use_flow_sigmas") and self.scheduler.config.use_flow_sigmas:
-                sigmas = None
-            image_seq_len = (int(height) // self.vae_scale_factor // 2) * (int(width) // self.vae_scale_factor // 2)
-            mu = calculate_shift(
-                image_seq_len,
-                self.scheduler.config.get("base_image_seq_len", 256),
-                # self.scheduler.config.get("max_image_seq_len", 4096),
-                image_seq_len,
-                self.scheduler.config.get("base_shift", 0.5),
-                self.scheduler.config.get("max_shift", 1.15),
-            )
-            timesteps, num_inference_steps = retrieve_timesteps(
-                self.scheduler,
-                num_inference_steps,
-                device,
-                sigmas=sigmas,
-                mu=mu,
-            )
-           
-            # strength=1
-            # timesteps, num_inference_steps = self.get_timesteps(num_inference_steps, strength, device)
-            latent_timestep = timesteps[:1].repeat(batch_size * num_images_per_prompt)
+ 
+        latents, latent_image_ids = self.prepare_latents(
+            batch_size * num_images_per_prompt,
+            num_channels_latents,
+            height,
+            width,
+            prompt_embeds.dtype,
+            device,
+            generator,
+            latents,
+        )
 
-            latents, latent_image_ids = self.prepare_latents(
-                batch_size * num_images_per_prompt,
-                num_channels_latents,
-                height,
-                width,
-                prompt_embeds.dtype,
-                device,
-                generator,
-                latents,
-                latent_timestep,
-            )
-            num_warmup_steps = max(len(timesteps) - num_inference_steps * self.scheduler.order, 0)
-            self._num_timesteps = len(timesteps)
-        else:
-            latents, latent_image_ids = self.prepare_latents(
-                batch_size * num_images_per_prompt,
-                num_channels_latents,
-                height,
-                width,
-                prompt_embeds.dtype,
-                device,
-                generator,
-                latents,
-            )
-
-            sigmas = np.linspace(1.0, 1 / num_inference_steps, num_inference_steps) if sigmas is None else sigmas
-            if hasattr(self.scheduler.config, "use_flow_sigmas") and self.scheduler.config.use_flow_sigmas:
-                sigmas = None
-            image_seq_len = latents.shape[1]
-            mu = calculate_shift(
-                image_seq_len,
-                self.scheduler.config.get("base_image_seq_len", 256),
-                # self.scheduler.config.get("max_image_seq_len", 4096),
-                image_seq_len,
-                self.scheduler.config.get("base_shift", 0.5),
-                self.scheduler.config.get("max_shift", 1.15),
-            )
-            timesteps, num_inference_steps = retrieve_timesteps(
-                self.scheduler,
-                num_inference_steps,
-                device,
-                sigmas=sigmas,
-                mu=mu,
-            )
-            num_warmup_steps = max(len(timesteps) - num_inference_steps * self.scheduler.order, 0)
-            self._num_timesteps = len(timesteps)
+        sigmas = np.linspace(1.0, 1 / num_inference_steps, num_inference_steps) if sigmas is None else sigmas
+        if hasattr(self.scheduler.config, "use_flow_sigmas") and self.scheduler.config.use_flow_sigmas:
+            sigmas = None
+        image_seq_len = latents.shape[1]
+        mu = calculate_shift(
+            image_seq_len,
+            self.scheduler.config.get("base_image_seq_len", 256),
+            # self.scheduler.config.get("max_image_seq_len", 4096),
+            image_seq_len,
+            self.scheduler.config.get("base_shift", 0.5),
+            self.scheduler.config.get("max_shift", 1.15),
+        )
+        timesteps, num_inference_steps = retrieve_timesteps(
+            self.scheduler,
+            num_inference_steps,
+            device,
+            sigmas=sigmas,
+            mu=mu,
+        )
+        num_warmup_steps = max(len(timesteps) - num_inference_steps * self.scheduler.order, 0)
+        self._num_timesteps = len(timesteps)
 
         # handle guidance
         if self.transformer.config.guidance_embeds:
@@ -966,13 +929,13 @@ class FluxPipeline(
                 device,
                 batch_size * num_images_per_prompt,
             )
-        if negative_ip_adapter_image is not None or negative_ip_adapter_image_embeds is not None:
-            negative_image_embeds = self.prepare_ip_adapter_image_embeds(
-                negative_ip_adapter_image,
-                negative_ip_adapter_image_embeds,
-                device,
-                batch_size * num_images_per_prompt,
-            )
+        # if negative_ip_adapter_image is not None or negative_ip_adapter_image_embeds is not None:
+        #     negative_image_embeds = self.prepare_ip_adapter_image_embeds(
+        #         negative_ip_adapter_image,
+        #         negative_ip_adapter_image_embeds,
+        #         device,
+        #         batch_size * num_images_per_prompt,
+        #     )
 
         # 6. Denoising loop
         # We set the index here to remove DtoH sync, helpful especially during compilation.
