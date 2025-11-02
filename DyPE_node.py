@@ -48,8 +48,8 @@ class DyPE_Condition:
                     "ip_adpter": (["none"] +folder_paths.get_filename_list("photomaker"),),
                     "lora1": (["none"] +folder_paths.get_filename_list("loras"),),
                     "lora2": (["none"] +folder_paths.get_filename_list("loras"),),
-                    "scale1": ("FLOAT", {"default": 1.0, "min": 0.1, "max": 1.0, "step": 0.1, "round": 0.01,}),
-                    "scale2": ("FLOAT", {"default": 1.0, "min": 0.1, "max": 1.0, "step": 0.1, "round": 0.01,}),
+                    "scale1": ("FLOAT", {"default": 1.0, "min": 0.01, "max": 1.0, "step": 0.01, "round": 0.001,}),
+                    "scale2": ("FLOAT", {"default": 1.0, "min": 0.01, "max": 1.0, "step": 0.01, "round": 0.001,}),
                     }
                 }
     
