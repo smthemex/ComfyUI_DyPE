@@ -121,9 +121,11 @@ class DyPE_KSampler:
             model.enable_model_cpu_offload()
         condition=positive[0][1].get("add_dict")
         width,height=condition.get("size",(1024,1024))
+        ip_adapter_image_embeds=positive[0][1].get("unclip_conditioning",None)
+        ip_adapter_image_embeds=[ip_adapter_image_embeds[0]["clip_vision_output"]["image_embeds"]] if ip_adapter_image_embeds is not None else None
         samples=infer_dype(
             model,
-            ip_adapter_image_embeds=positive[0][1]["unclip_conditioning"][0]["clip_vision_output"]["image_embeds"], #image_embeds.
+            ip_adapter_image_embeds=ip_adapter_image_embeds, #image_embeds.
             prompt_embeds=positive[0][0],
             pooled_prompt_embeds=positive[0][1].get("pooled_output"),
             negative_prompt_embeds=None,
