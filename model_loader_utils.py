@@ -215,7 +215,7 @@ def apply_base_model(diffusion_models,gguf,use_dype,method,):
 
 def infer_dype(pipeline, ip_adapter_image_embeds, prompt_embeds,pooled_prompt_embeds,negative_prompt_embeds,negative_pooled_prompt_embeds,seed, 
                           guidance_scale,num_inference_steps,width,height):
-    print(ip_adapter_image_embeds.shape)
+
     inputs = {
         "prompt": None,
         "generator": torch.manual_seed(seed),
@@ -226,7 +226,7 @@ def infer_dype(pipeline, ip_adapter_image_embeds, prompt_embeds,pooled_prompt_em
         "pooled_prompt_embeds":pooled_prompt_embeds,
         "negative_prompt_embeds": negative_prompt_embeds,
         "negative_pooled_prompt_embeds":negative_pooled_prompt_embeds,
-        "ip_adapter_image_embeds":[ip_adapter_image_embeds],
+        "ip_adapter_image_embeds":ip_adapter_image_embeds,
         "height": height,
         "width": width,  
     }
