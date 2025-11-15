@@ -7,7 +7,7 @@ from PIL import Image
 import numpy as np
 import cv2
 from omegaconf import OmegaConf
-
+from contextlib import contextmanager
 from safetensors.torch import load_file
 from comfy.utils import common_upscale
 import folder_paths
@@ -15,16 +15,29 @@ import node_helpers
 import sys 
 from.DyPE.flux.transformer_flux import FluxTransformer2DModel as   DyPEFluxTransformer2DModel 
 
-try:
-    diffusers_module = sys.modules.get('diffusers')
-    if diffusers_module:
-        setattr(diffusers_module, 'FluxTransformer2DModel', DyPEFluxTransformer2DModel)
-except Exception as e:
-    print(f"Warning: Could not register DyPEFluxTransformer2DModel with diffusers module: {e}")
 
 
 cur_path = os.path.dirname(os.path.abspath(__file__))
 
+@contextmanager
+def temp_patch_module_attr(module_name: str, attr_name: str, new_obj):
+    mod = sys.modules.get(module_name)
+    if mod is None:
+        yield
+        return
+    had = hasattr(mod, attr_name)
+    orig = getattr(mod, attr_name, None)
+    setattr(mod, attr_name, new_obj)
+    try:
+        yield
+    finally:
+        if had:
+            setattr(mod, attr_name, orig)
+        else:
+            try:
+                delattr(mod, attr_name)
+            except Exception:
+                pass
 
 def gc_cleanup():
     gc.collect()
@@ -111,27 +124,30 @@ def load_flux_tansformer(gguf_path,unet_path,use_dype,method,):
     if gguf_path : 
         print("use gguf quantization")
         from diffusers import  GGUFQuantizationConfig
-        transformer = DyPEFluxTransformer2DModel.from_single_file(
-            gguf_path,
-            config=os.path.join(cur_path, "Flux/FLUX.1-Krea-dev/transformer"),
-            quantization_config=GGUFQuantizationConfig(compute_dtype=torch.bfloat16),
-            torch_dtype=torch.bfloat16,
-        )
+        with temp_patch_module_attr("diffusers", "FluxTransformer2DModel", DyPEFluxTransformer2DModel):
+            transformer = DyPEFluxTransformer2DModel.from_single_file(
+                gguf_path,
+                config=os.path.join(cur_path, "Flux/FLUX.1-Krea-dev/transformer"),
+                quantization_config=GGUFQuantizationConfig(compute_dtype=torch.bfloat16),
+                torch_dtype=torch.bfloat16,
+            )
 
     elif unet_path :
         print("use single unet")
 
         try:
-            transformer =DyPEFluxTransformer2DModel.from_single_file(unet_path,config=os.path.join(cur_path, "Flux/FLUX.1-Krea-dev/transformer"),torch_dtype=torch.bfloat16,)
+            with temp_patch_module_attr("diffusers", "FluxTransformer2DModel", DyPEFluxTransformer2DModel):
+                transformer =DyPEFluxTransformer2DModel.from_single_file(unet_path,config=os.path.join(cur_path, "Flux/FLUX.1-Krea-dev/transformer"),torch_dtype=torch.bfloat16,)
         except:
-            t_state_dict=load_file(unet_path,device="cpu")
-            quantization_config = DyPEFluxTransformer2DModel.load_config(os.path.join(cur_path,"Flux/FLUX.1-Krea-dev/transformer/config.json"))
-            quantization_config["dype"]=use_dype
-            quantization_config["method"]=method
-            transformer = DyPEFluxTransformer2DModel.from_config(quantization_config,torch_dtype=torch.bfloat16)
-            transformer.load_state_dict(t_state_dict, strict=False)
-            del t_state_dict
-            gc_cleanup()
+            with temp_patch_module_attr("diffusers", "FluxTransformer2DModel", DyPEFluxTransformer2DModel):
+                t_state_dict=load_file(unet_path,device="cpu") 
+                quantization_config = DyPEFluxTransformer2DModel.load_config(os.path.join(cur_path,"Flux/FLUX.1-Krea-dev/transformer/config.json"))
+                quantization_config["dype"]=use_dype
+                quantization_config["method"]=method
+                transformer = DyPEFluxTransformer2DModel.from_config(quantization_config,torch_dtype=torch.bfloat16)
+                transformer.load_state_dict(t_state_dict, strict=False)
+                del t_state_dict
+                gc_cleanup()
     else:
         raise "you must choice a unet or gguf "
 
