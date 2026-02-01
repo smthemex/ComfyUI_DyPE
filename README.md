@@ -3,11 +3,10 @@
 
 Upadte
 -----
-* add ip adapter support ,The effect is not a good ..  加入ip adapter支持
-* fix lora loader error ,tyr use a real lora and turo lora 
-* 24G Vram infer 4096x4096,  8G 2048x2048 ,12G 3840x2160,16G 3840x3840
- 
-  
+* add z image,qwen-image,flux2-klein9/4B support，klein need diffuser>0.37
+* 新增z-image，千问，克莱因9/4B的dype支持, klein需要最新版的diffuser
+
+
 1.Installation  
 -----
   In the ./ComfyUI/custom_nodes directory, run the following:   
@@ -30,31 +29,48 @@ pip install -r requirements.txt
 * 3.3 turbo lora  [alimama-creative](https://huggingface.co/alimama-creative/FLUX.1-Turbo-Alpha/tree/main)
 * 3.4 ip adapter [xflux](https://huggingface.co/XLabs-AI/flux-ip-adapter)
 * 3.5 clip_vision [ open](https://huggingface.co/openai/clip-vit-large-patch14)
-  
+* qwen/zimage/Klein use comfyUI split models，only klein vae need diffuser version
 ```
 ├── ComfyUI/models/diffusion_models
-|     ├── flux1-krea-dev-fp8.safetensors   #  or  flux1-krea-dev.safetensors
+|     ├── flux1-krea-dev-fp8.safetensors   #  or  flux1-krea-dev.safetensors # flux1
+|     ├── FLUX.2-klein-4B.safetensors  #  or 9B or gguf   #flux2
+|     ├──Qwen-Image-2512-bf16.safetensors  or gguf  # qwen
+|     ├──z_image_turbo_bf16.safetensors or gguf  #zimage
 ├── ComfyUI/models/vae
-|        ├──ae.safetensors
+|        ├──ae.safetensors or UltraFlux.safetensors  ##flux1 and z image
+|        ├──flux2_4b.safetensors  # flux2 klein need diffuser version,don't  support  comfyUI version 需要diffuser的模型
+|        ├──qwen_image_vae.safetensors #qwen
 ├── ComfyUI/models/clip
-|        ├──clip_l.safetensors
-|        ├──t5xxl_fp8_e4m3fn.safetensors
+|        ├──clip_l.safetensors  #flux1
+|        ├──t5xxl_fp8_e4m3fn.safetensors #flux1
+|        ├──qwen_3_4b.safetensors # z image flux2 klein4b
+|        ├──qwen_3_8b_fp8mixed.safetensors # flux2 klein9b
+|        ├──qwen_2.5_vl_7b.safetensors #qwen
 ├── ComfyUI/models/lora
-|        ├──flux_turbo.safetensors
-|        ├──flux_real.safetensors
-├── ComfyUI/models/photomaker  #ip only
-|        ├──ip_adapter.safetensors
-├── ComfyUI/models/clip_vision #ip only
+|        ├──flux_turbo.safetensors # flux1
+|        ├──flux_real.safetensors #flux1
+|        ├──Qwen-Image-Lightning-4steps-V1.0-bf16.safetensors  #qwen
+├── ComfyUI/models/photomaker  #ip only flux1
+|        ├──ip_adapter.safetensors 
+├── ComfyUI/models/clip_vision #ip only flux1
 |        ├──clip-vit-large-patch14.safetensors
 ```
   
 4.Example
 -----
-* t2i
+* z-image
+![](https://github.com/smthemex/ComfyUI_DyPE/blob/main/example_workflows/zimage.png)
+* 9B Klein
+![](https://github.com/smthemex/ComfyUI_DyPE/blob/main/example_workflows/9B.png)
+* 4B Klein
+![](https://github.com/smthemex/ComfyUI_DyPE/blob/main/example_workflows/4B.png)
+* qwen
+![](https://github.com/smthemex/ComfyUI_DyPE/blob/main/example_workflows/dype_qwen.png)
+* t2i flux1
 ![](https://github.com/smthemex/ComfyUI_DyPE/blob/main/example_workflows/example111.png)
-* i2i
+* i2i flux2
 ![](https://github.com/smthemex/ComfyUI_DyPE/blob/main/example_workflows/example_ip.png)
-* example
+* example flux1
 ![](https://github.com/smthemex/ComfyUI_DyPE/blob/main/example_workflows/ComfyUI_00008_.png)
 
 5.License and Commercial Use

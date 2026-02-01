@@ -1,0 +1,2389 @@
+{
+  "id": "dcb902c2-f623-4782-80ca-d82f4367b76a",
+  "revision": 0,
+  "last_node_id": 83,
+  "last_link_id": 92,
+  "nodes": [
+    {
+      "id": 7,
+      "type": "VAEDecode",
+      "pos": [
+        2693.1677080869367,
+        473.5728900898951
+      ],
+      "size": [
+        140,
+        46
+      ],
+      "flags": {},
+      "order": 44,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 6
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            9
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 5,
+      "type": "DyPE_KSampler",
+      "pos": [
+        2603.097926185506,
+        155.97788699155575
+      ],
+      "size": [
+        289.4140625,
+        266
+      ],
+      "flags": {},
+      "order": 37,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 20
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 17
+        },
+        {
+          "name": "negative",
+          "shape": 7,
+          "type": "CONDITIONING",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DyPE_KSampler"
+      },
+      "widgets_values": [
+        1650109550,
+        "randomize",
+        8,
+        4.5,
+        true,
+        1,
+        true,
+        1
+      ]
+    },
+    {
+      "id": 1,
+      "type": "DyPE_Model",
+      "pos": [
+        1874.1881574059478,
+        168.9323689176262
+      ],
+      "size": [
+        270,
+        130
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            19
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DyPE_Model"
+      },
+      "widgets_values": [
+        "flux1-kj-dev-fp8.safetensors",
+        "none"
+      ]
+    },
+    {
+      "id": 12,
+      "type": "CLIPVisionLoader",
+      "pos": [
+        1770.216218772174,
+        598.4961442441071
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP_VISION",
+          "type": "CLIP_VISION",
+          "links": [
+            12
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPVisionLoader"
+      },
+      "widgets_values": [
+        "model.safetensors"
+      ]
+    },
+    {
+      "id": 10,
+      "type": "SaveImage",
+      "pos": [
+        2885.7334564330686,
+        388.97138906875705
+      ],
+      "size": [
+        678.1073453740255,
+        590.2257718073113
+      ],
+      "flags": {},
+      "order": 51,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 9
+        }
+      ],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "ComfyUI"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "VAELoader",
+      "pos": [
+        2528.5522785053454,
+        777.2828861472223
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "ae.safetensors"
+      ]
+    },
+    {
+      "id": 17,
+      "type": "DyPE_Condition",
+      "pos": [
+        2205.750000280179,
+        162.1197819373346
+      ],
+      "size": [
+        270,
+        154
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 19
+        }
+      ],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            20
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DyPE_Condition"
+      },
+      "widgets_values": [
+        "ip_adapter.safetensors",
+        "flux-turbo.safetensors",
+        "none",
+        1,
+        1
+      ]
+    },
+    {
+      "id": 19,
+      "type": "DyPE_KSampler",
+      "pos": [
+        4439.527075154376,
+        73.23682265827341
+      ],
+      "size": [
+        289.4140625,
+        266
+      ],
+      "flags": {},
+      "order": 34,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 23
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 34
+        },
+        {
+          "name": "negative",
+          "shape": 7,
+          "type": "CONDITIONING",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            21
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DyPE_KSampler"
+      },
+      "widgets_values": [
+        2048,
+        2048,
+        339977910,
+        "randomize",
+        8,
+        3.5,
+        true,
+        1
+      ]
+    },
+    {
+      "id": 18,
+      "type": "VAEDecode",
+      "pos": [
+        4576.162324428584,
+        401.6778328539738
+      ],
+      "size": [
+        140,
+        46
+      ],
+      "flags": {},
+      "order": 40,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 21
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 22
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            29
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 22,
+      "type": "DualCLIPLoader",
+      "pos": [
+        3713.560502122233,
+        284.7059655486243
+      ],
+      "size": [
+        270,
+        130
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            35
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DualCLIPLoader"
+      },
+      "widgets_values": [
+        "clip_l.safetensors",
+        "t5xxl_fp8_e4m3fn.safetensors",
+        "flux",
+        "default"
+      ]
+    },
+    {
+      "id": 27,
+      "type": "VAELoader",
+      "pos": [
+        3724.8893016506627,
+        481.1302032007156
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            22
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "UltraFlux.safetensors"
+      ]
+    },
+    {
+      "id": 28,
+      "type": "DyPE_Condition",
+      "pos": [
+        4093.1674379654487,
+        70.3790202630058
+      ],
+      "size": [
+        270,
+        154
+      ],
+      "flags": {},
+      "order": 26,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 30
+        }
+      ],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            23
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DyPE_Condition"
+      },
+      "widgets_values": [
+        "none",
+        "flux-turbo.safetensors",
+        "none",
+        1,
+        1
+      ]
+    },
+    {
+      "id": 31,
+      "type": "CLIPTextEncode",
+      "pos": [
+        4036.5378702296166,
+        272.3071594776252
+      ],
+      "size": [
+        388.0609483075059,
+        106.47730088576532
+      ],
+      "flags": {},
+      "order": 20,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 35
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            34
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "1 girl, Ultra HD, 4K, cinematic composition"
+      ]
+    },
+    {
+      "id": 9,
+      "type": "DualCLIPLoader",
+      "pos": [
+        1771.9125016418786,
+        404.23312728574325
+      ],
+      "size": [
+        270,
+        130
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            54
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DualCLIPLoader"
+      },
+      "widgets_values": [
+        "clip_l.safetensors",
+        "t5xxl_fp8_e4m3fn.safetensors",
+        "flux",
+        "default"
+      ]
+    },
+    {
+      "id": 14,
+      "type": "LoadImage",
+      "pos": [
+        1862.0220342488067,
+        707.93775733665
+      ],
+      "size": [
+        270,
+        314
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            13
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "4d7bab4c4502fcbd04e7c53758546d07.png",
+        "image"
+      ]
+    },
+    {
+      "id": 53,
+      "type": "CLIPTextEncode",
+      "pos": [
+        2107.907323789879,
+        344.70803762138286
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 21,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 54
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            55
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "1 girl, Ultra HD, 4K, cinematic composition"
+      ]
+    },
+    {
+      "id": 13,
+      "type": "CLIPVisionEncode",
+      "pos": [
+        2143.633673044463,
+        594.883596073742
+      ],
+      "size": [
+        270,
+        78
+      ],
+      "flags": {},
+      "order": 22,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "clip_vision",
+          "type": "CLIP_VISION",
+          "link": 12
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 13
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CLIP_VISION_OUTPUT",
+          "type": "CLIP_VISION_OUTPUT",
+          "links": [
+            15
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPVisionEncode"
+      },
+      "widgets_values": [
+        "center"
+      ]
+    },
+    {
+      "id": 16,
+      "type": "unCLIPConditioning",
+      "pos": [
+        2563.3786375683267,
+        552.8286173818502
+      ],
+      "size": [
+        270,
+        102
+      ],
+      "flags": {},
+      "order": 32,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 55
+        },
+        {
+          "name": "clip_vision_output",
+          "type": "CLIP_VISION_OUTPUT",
+          "link": 15
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            17
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "unCLIPConditioning"
+      },
+      "widgets_values": [
+        1,
+        0
+      ]
+    },
+    {
+      "id": 45,
+      "type": "DyPE_Model",
+      "pos": [
+        3719.0066178805623,
+        812.7230231469744
+      ],
+      "size": [
+        270,
+        130
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            45
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DyPE_Model"
+      },
+      "widgets_values": [
+        "none",
+        "Qwen-Image-2512-Q6_K.gguf"
+      ]
+    },
+    {
+      "id": 44,
+      "type": "DyPE_Condition",
+      "pos": [
+        4021.5348346721194,
+        790.9685087685875
+      ],
+      "size": [
+        331.8751310820535,
+        154
+      ],
+      "flags": {},
+      "order": 23,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 45
+        }
+      ],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            50
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DyPE_Condition"
+      },
+      "widgets_values": [
+        "none",
+        "Qwen-Image-Lightning-4steps-V1.0-bf16.safetensors",
+        "none",
+        1,
+        1
+      ]
+    },
+    {
+      "id": 52,
+      "type": "CLIPLoader",
+      "pos": [
+        3710.3829468727513,
+        1029.1471615271917
+      ],
+      "size": [
+        270,
+        106
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            53,
+            59
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPLoader"
+      },
+      "widgets_values": [
+        "qwen_2.5_vl_7b.safetensors",
+        "qwen_image",
+        "default"
+      ]
+    },
+    {
+      "id": 49,
+      "type": "CLIPTextEncode",
+      "pos": [
+        4012.3195814235187,
+        980.6557950259909
+      ],
+      "size": [
+        347.54043935419304,
+        105.03010915392179
+      ],
+      "flags": {},
+      "order": 24,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 53
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            61
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "1 girl, Ultra HD, 4K, cinematic composition"
+      ]
+    },
+    {
+      "id": 56,
+      "type": "CLIPTextEncode",
+      "pos": [
+        4012.0374561856606,
+        1124.4022511418168
+      ],
+      "size": [
+        347.54043935419304,
+        105.03010915392179
+      ],
+      "flags": {},
+      "order": 25,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 59
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            62
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "\"低分辨率，低画质，肢体畸形，手指畸形，画面过饱和，蜡像感，人脸无细节，过度光滑，画面具有AI感。构图混乱。文字模糊，扭曲。\""
+      ]
+    },
+    {
+      "id": 51,
+      "type": "DyPE_KSampler",
+      "pos": [
+        4425.5668678195025,
+        802.0170636746419
+      ],
+      "size": [
+        289.4140625,
+        266
+      ],
+      "flags": {},
+      "order": 33,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 50
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 61
+        },
+        {
+          "name": "negative",
+          "shape": 7,
+          "type": "CONDITIONING",
+          "link": 62
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            47,
+            56
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DyPE_KSampler"
+      },
+      "widgets_values": [
+        2560,
+        2560,
+        1284016403,
+        "randomize",
+        4,
+        3,
+        true,
+        1
+      ]
+    },
+    {
+      "id": 46,
+      "type": "SaveImage",
+      "pos": [
+        4800.7062573970825,
+        786.6625726612052
+      ],
+      "size": [
+        434.86409461206676,
+        326.6436220926437
+      ],
+      "flags": {},
+      "order": 45,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 46
+        }
+      ],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "ComfyUI"
+      ]
+    },
+    {
+      "id": 55,
+      "type": "SaveImage",
+      "pos": [
+        4784.73296226331,
+        1157.5998762180216
+      ],
+      "size": [
+        462.6169210715734,
+        392.6720574201279
+      ],
+      "flags": {},
+      "order": 46,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 58
+        }
+      ],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "ComfyUI"
+      ]
+    },
+    {
+      "id": 47,
+      "type": "VAEDecode",
+      "pos": [
+        4554.738564711315,
+        1123.0577937266119
+      ],
+      "size": [
+        140,
+        46
+      ],
+      "flags": {},
+      "order": 38,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 47
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 48
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            46
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 50,
+      "type": "VAELoader",
+      "pos": [
+        4077.551344516066,
+        1268.6108769243342
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            48,
+            57
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "qwen_image_vae.safetensors"
+      ]
+    },
+    {
+      "id": 20,
+      "type": "DyPE_Model",
+      "pos": [
+        3731.4980935471626,
+        89.00036962713882
+      ],
+      "size": [
+        270,
+        130
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            30
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DyPE_Model"
+      },
+      "widgets_values": [
+        "flux1-kj-dev-fp8.safetensors",
+        "none"
+      ]
+    },
+    {
+      "id": 25,
+      "type": "SaveImage",
+      "pos": [
+        4784.835443345301,
+        75.42219893136395
+      ],
+      "size": [
+        678.1073453740255,
+        590.2257718073113
+      ],
+      "flags": {},
+      "order": 47,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 29
+        }
+      ],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "ComfyUI"
+      ]
+    },
+    {
+      "id": 61,
+      "type": "DyPE_Condition",
+      "pos": [
+        4028.5365712239886,
+        1685.2718240447964
+      ],
+      "size": [
+        270,
+        154
+      ],
+      "flags": {},
+      "order": 28,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 63
+        }
+      ],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            64
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DyPE_Condition"
+      },
+      "widgets_values": [
+        "none",
+        "none",
+        "none",
+        1,
+        1
+      ]
+    },
+    {
+      "id": 63,
+      "type": "CLIPLoader",
+      "pos": [
+        3724.9085207454486,
+        1901.2402321016266
+      ],
+      "size": [
+        270,
+        106
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            66
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPLoader"
+      },
+      "widgets_values": [
+        "qwen_3_4b.safetensors",
+        "lumina2",
+        "default"
+      ]
+    },
+    {
+      "id": 54,
+      "type": "VAEDecodeTiled",
+      "pos": [
+        4434.740763470999,
+        1224.8264897064612
+      ],
+      "size": [
+        270,
+        150
+      ],
+      "flags": {},
+      "order": 39,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 56
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 57
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            58
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecodeTiled"
+      },
+      "widgets_values": [
+        512,
+        64,
+        64,
+        4
+      ]
+    },
+    {
+      "id": 64,
+      "type": "VAELoader",
+      "pos": [
+        4177.230582567372,
+        2040.7157727613794
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            70,
+            89
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "UltraFlux.safetensors"
+      ]
+    },
+    {
+      "id": 62,
+      "type": "DyPE_Model",
+      "pos": [
+        3711.1369467758664,
+        1763.3290151460299
+      ],
+      "size": [
+        284.56674103808473,
+        82
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            63
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DyPE_Model"
+      },
+      "widgets_values": [
+        "z_image_turbo_bf16.safetensors",
+        "none"
+      ]
+    },
+    {
+      "id": 58,
+      "type": "DyPE_KSampler",
+      "pos": [
+        4365.371436683792,
+        1698.7050676912672
+      ],
+      "size": [
+        289.4140625,
+        266
+      ],
+      "flags": {},
+      "order": 35,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 64
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 65
+        },
+        {
+          "name": "negative",
+          "shape": 7,
+          "type": "CONDITIONING",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            71,
+            88
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DyPE_KSampler"
+      },
+      "widgets_values": [
+        3840,
+        3840,
+        1616801390,
+        "randomize",
+        8,
+        0,
+        true,
+        1
+      ]
+    },
+    {
+      "id": 71,
+      "type": "SaveImage",
+      "pos": [
+        6478.255873310845,
+        833.9797757048099
+      ],
+      "size": [
+        554.8274457549378,
+        436.31226930545745
+      ],
+      "flags": {},
+      "order": 50,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 83
+        }
+      ],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "ComfyUI"
+      ]
+    },
+    {
+      "id": 60,
+      "type": "CLIPTextEncode",
+      "pos": [
+        4036.411628703497,
+        1899.5176744222915
+      ],
+      "size": [
+        273.64486774186116,
+        105.48234803063451
+      ],
+      "flags": {},
+      "order": 27,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 66
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            65
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "亚洲，真人， 古风，艺术氛围感加强，肖像人像特写。绝美女子着明制汉服，上身汉服交领右衽长披袄罩圆领对襟长衫，领缘白色，门襟合拢扣一枚金属子母扣，材质轻薄，上衣遮盖至膝盖，底缘露出明制妆花纱马面裙织金裙襕。传统复古纹样写实，暗纹，提花，通肩连袖柿蒂纹，折枝牡丹纹，大袖，精致双鬟髻，金色发饰，发钗，坐在石头上，背景青色砖墙，台阶，芙蓉花，鸡爪槭叶片微红，结满葡萄的藤架，水面涟漪，阳光洒下光斑，微风，平视目光，美艳妆容，俏丽，温柔，红唇，抿住嘴角的笑意，生动可爱，淡彩，柔焦，高光，珠光，色彩弥散，复古色，月白，淡青，秋香黄，翠蓝，花青，背景虚化，细节优化，高对比度，光影自然"
+      ]
+    },
+    {
+      "id": 79,
+      "type": "VAEDecode",
+      "pos": [
+        4516.3044723258645,
+        2034.4536988601037
+      ],
+      "size": [
+        140,
+        46
+      ],
+      "flags": {},
+      "order": 42,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 88
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 89
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            90
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 57,
+      "type": "SaveImage",
+      "pos": [
+        4718.442005339171,
+        1669.1642443577466
+      ],
+      "size": [
+        554.8274457549378,
+        436.31226930545745
+      ],
+      "flags": {},
+      "order": 49,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 90
+        }
+      ],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "ComfyUI"
+      ]
+    },
+    {
+      "id": 65,
+      "type": "VAEDecodeTiled",
+      "pos": [
+        4431.729119913694,
+        2183.2144495320736
+      ],
+      "size": [
+        270,
+        150
+      ],
+      "flags": {},
+      "order": 41,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 71
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 70
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            72
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecodeTiled"
+      },
+      "widgets_values": [
+        512,
+        64,
+        64,
+        4
+      ]
+    },
+    {
+      "id": 66,
+      "type": "SaveImage",
+      "pos": [
+        4717.813306433748,
+        2149.424959555906
+      ],
+      "size": [
+        548.6925758504685,
+        449.6144483511828
+      ],
+      "flags": {},
+      "order": 48,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 72
+        }
+      ],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "ComfyUI"
+      ]
+    },
+    {
+      "id": 67,
+      "type": "DyPE_Condition",
+      "pos": [
+        5763.350439195663,
+        801.0873553918597
+      ],
+      "size": [
+        270,
+        154
+      ],
+      "flags": {},
+      "order": 29,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 73
+        }
+      ],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            81
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DyPE_Condition"
+      },
+      "widgets_values": [
+        "none",
+        "none",
+        "none",
+        1,
+        1
+      ]
+    },
+    {
+      "id": 69,
+      "type": "CLIPTextEncode",
+      "pos": [
+        5731.589133038808,
+        998.7877512238997
+      ],
+      "size": [
+        336.56486774186124,
+        172.0323480306347
+      ],
+      "flags": {},
+      "order": 30,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 76
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            82
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "亚洲，真人， 古风，艺术氛围感加强，肖像人像特写。绝美女子着明制汉服，上身汉服交领右衽长披袄罩圆领对襟长衫，领缘白色，门襟合拢扣一枚金属子母扣，材质轻薄，上衣遮盖至膝盖，底缘露出明制妆花纱马面裙织金裙襕。传统复古纹样写实，暗纹，提花，通肩连袖柿蒂纹，折枝牡丹纹，大袖，精致双鬟髻，金色发饰，发钗，坐在石头上，背景青色砖墙，台阶，芙蓉花，鸡爪槭叶片微红，结满葡萄的藤架，水面涟漪，阳光洒下光斑，微风，平视目光，美艳妆容，俏丽，温柔，红唇，抿住嘴角的笑意，生动可爱，淡彩，柔焦，高光，珠光，色彩弥散，复古色，月白，淡青，秋香黄，翠蓝，花青，背景虚化，细节优化，高对比度，光影自然"
+      ]
+    },
+    {
+      "id": 80,
+      "type": "CLIPTextEncode",
+      "pos": [
+        5732.589133038808,
+        1215.7877512238997
+      ],
+      "size": [
+        336.56486774186124,
+        172.0323480306347
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 31,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 91
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            92
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 77,
+      "type": "DyPE_Encoder",
+      "pos": [
+        6156.416652941151,
+        1187.6171185709322
+      ],
+      "size": [
+        271.75782387731397,
+        65.58429416037188
+      ],
+      "flags": {},
+      "order": 43,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "latent",
+          "type": "LATENT",
+          "link": 84
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            83
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DyPE_Encoder"
+      },
+      "widgets_values": [
+        "flux2_4b.safetensors"
+      ]
+    },
+    {
+      "id": 75,
+      "type": "DyPE_Model",
+      "pos": [
+        5425.567786409638,
+        889.7959842586935
+      ],
+      "size": [
+        284.56674103808473,
+        82
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            73
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DyPE_Model"
+      },
+      "widgets_values": [
+        "flux-2-klein-9b.safetensors",
+        "none"
+      ]
+    },
+    {
+      "id": 76,
+      "type": "DyPE_KSampler",
+      "pos": [
+        6141.870751808285,
+        856.3696931156945
+      ],
+      "size": [
+        289.4140625,
+        266
+      ],
+      "flags": {},
+      "order": 36,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 81
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 82
+        },
+        {
+          "name": "negative",
+          "shape": 7,
+          "type": "CONDITIONING",
+          "link": 92
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            84
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DyPE_KSampler"
+      },
+      "widgets_values": [
+        2560,
+        2560,
+        1970544699,
+        "randomize",
+        20,
+        3.5,
+        true,
+        1
+      ]
+    },
+    {
+      "id": 82,
+      "type": "DyPE_Model",
+      "pos": [
+        5435.335057024729,
+        743.4351422295575
+      ],
+      "size": [
+        284.56674103808473,
+        82
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 4,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DyPE_Model"
+      },
+      "widgets_values": [
+        "FLUX.2-klein-4B-transformer.safetensors",
+        "none"
+      ]
+    },
+    {
+      "id": 70,
+      "type": "CLIPLoader",
+      "pos": [
+        5438.676934171671,
+        1046.1103089032347
+      ],
+      "size": [
+        270,
+        106
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            76,
+            91
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPLoader"
+      },
+      "widgets_values": [
+        "qwen_3_8b_fp8mixed.safetensors",
+        "flux2",
+        "default"
+      ]
+    },
+    {
+      "id": 81,
+      "type": "Note",
+      "pos": [
+        5428.019980544693,
+        1366.5328922693493
+      ],
+      "size": [
+        262.13668518001396,
+        126.97818219549163
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "9B need 8B qwen3 ,and vfg "
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 83,
+      "type": "CLIPLoader",
+      "pos": [
+        5432.950575287717,
+        1201.2793332785973
+      ],
+      "size": [
+        270,
+        106
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 4,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPLoader"
+      },
+      "widgets_values": [
+        "qwen_3_4b.safetensors",
+        "flux2",
+        "default"
+      ]
+    }
+  ],
+  "links": [
+    [
+      6,
+      5,
+      0,
+      7,
+      0,
+      "LATENT"
+    ],
+    [
+      7,
+      8,
+      0,
+      7,
+      1,
+      "VAE"
+    ],
+    [
+      9,
+      7,
+      0,
+      10,
+      0,
+      "IMAGE"
+    ],
+    [
+      12,
+      12,
+      0,
+      13,
+      0,
+      "CLIP_VISION"
+    ],
+    [
+      13,
+      14,
+      0,
+      13,
+      1,
+      "IMAGE"
+    ],
+    [
+      15,
+      13,
+      0,
+      16,
+      1,
+      "CLIP_VISION_OUTPUT"
+    ],
+    [
+      17,
+      16,
+      0,
+      5,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      19,
+      1,
+      0,
+      17,
+      0,
+      "MODEL"
+    ],
+    [
+      20,
+      17,
+      0,
+      5,
+      0,
+      "MODEL"
+    ],
+    [
+      21,
+      19,
+      0,
+      18,
+      0,
+      "LATENT"
+    ],
+    [
+      22,
+      27,
+      0,
+      18,
+      1,
+      "VAE"
+    ],
+    [
+      23,
+      28,
+      0,
+      19,
+      0,
+      "MODEL"
+    ],
+    [
+      29,
+      18,
+      0,
+      25,
+      0,
+      "IMAGE"
+    ],
+    [
+      30,
+      20,
+      0,
+      28,
+      0,
+      "MODEL"
+    ],
+    [
+      34,
+      31,
+      0,
+      19,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      35,
+      22,
+      0,
+      31,
+      0,
+      "CLIP"
+    ],
+    [
+      45,
+      45,
+      0,
+      44,
+      0,
+      "MODEL"
+    ],
+    [
+      46,
+      47,
+      0,
+      46,
+      0,
+      "IMAGE"
+    ],
+    [
+      47,
+      51,
+      0,
+      47,
+      0,
+      "LATENT"
+    ],
+    [
+      48,
+      50,
+      0,
+      47,
+      1,
+      "VAE"
+    ],
+    [
+      50,
+      44,
+      0,
+      51,
+      0,
+      "MODEL"
+    ],
+    [
+      53,
+      52,
+      0,
+      49,
+      0,
+      "CLIP"
+    ],
+    [
+      54,
+      9,
+      0,
+      53,
+      0,
+      "CLIP"
+    ],
+    [
+      55,
+      53,
+      0,
+      16,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      56,
+      51,
+      0,
+      54,
+      0,
+      "LATENT"
+    ],
+    [
+      57,
+      50,
+      0,
+      54,
+      1,
+      "VAE"
+    ],
+    [
+      58,
+      54,
+      0,
+      55,
+      0,
+      "IMAGE"
+    ],
+    [
+      59,
+      52,
+      0,
+      56,
+      0,
+      "CLIP"
+    ],
+    [
+      61,
+      49,
+      0,
+      51,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      62,
+      56,
+      0,
+      51,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      63,
+      62,
+      0,
+      61,
+      0,
+      "MODEL"
+    ],
+    [
+      64,
+      61,
+      0,
+      58,
+      0,
+      "MODEL"
+    ],
+    [
+      65,
+      60,
+      0,
+      58,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      66,
+      63,
+      0,
+      60,
+      0,
+      "CLIP"
+    ],
+    [
+      70,
+      64,
+      0,
+      65,
+      1,
+      "VAE"
+    ],
+    [
+      71,
+      58,
+      0,
+      65,
+      0,
+      "LATENT"
+    ],
+    [
+      72,
+      65,
+      0,
+      66,
+      0,
+      "IMAGE"
+    ],
+    [
+      73,
+      75,
+      0,
+      67,
+      0,
+      "MODEL"
+    ],
+    [
+      76,
+      70,
+      0,
+      69,
+      0,
+      "CLIP"
+    ],
+    [
+      81,
+      67,
+      0,
+      76,
+      0,
+      "MODEL"
+    ],
+    [
+      82,
+      69,
+      0,
+      76,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      83,
+      77,
+      0,
+      71,
+      0,
+      "IMAGE"
+    ],
+    [
+      84,
+      76,
+      0,
+      77,
+      0,
+      "LATENT"
+    ],
+    [
+      88,
+      58,
+      0,
+      79,
+      0,
+      "LATENT"
+    ],
+    [
+      89,
+      64,
+      0,
+      79,
+      1,
+      "VAE"
+    ],
+    [
+      90,
+      79,
+      0,
+      57,
+      0,
+      "IMAGE"
+    ],
+    [
+      91,
+      70,
+      0,
+      80,
+      0,
+      "CLIP"
+    ],
+    [
+      92,
+      80,
+      0,
+      76,
+      2,
+      "CONDITIONING"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "ip adapter",
+      "bounding": [
+        1681.9002794251167,
+        4.7150904475903,
+        1979.7693582441075,
+        1102.5795869455212
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "txt2img Flux ",
+      "bounding": [
+        3703.560502122233,
+        -3.2209797369941917,
+        1769.3821577288218,
+        685.9068653184314
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "txt2img qwen",
+      "bounding": [
+        3700.3829468727513,
+        719.1774642754389,
+        1572.6816558618434,
+        843.8847914899842
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 5,
+      "title": "txt2img z-image",
+      "bounding": [
+        3714.9085207454486,
+        1595.5642443577467,
+        1577.6308333571374,
+        1028.4211227913552
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 6,
+      "title": "flux2 klein 4B&9B",
+      "bounding": [
+        5391.323914907141,
+        711.3768996674099,
+        1732.9407999999985,
+        1072.6597999999992
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.6934334949441363,
+      "offset": [
+        -4635.901875836454,
+        -307.77292717228875
+      ]
+    },
+    "frontendVersion": "1.37.11",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true,
+    "workflowRendererVersion": "LG"
+  },
+  "version": 0.4
+}
