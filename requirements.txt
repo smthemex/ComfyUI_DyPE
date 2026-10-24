@@ -1,8 +1,0 @@
-torch
-torchvision
-diffusers
-transformers
-accelerate
-sentencepiece
-opencv-python
-omegaconf
